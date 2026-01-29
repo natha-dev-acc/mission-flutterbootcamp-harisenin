@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../helpers/login_validator.dart';
+
+import '../../routes/app_routes.dart';
+
 import '../../styles/app_color.dart';
 import '../../styles/app_fontstyle.dart';
+
 import '../../widgets/wanderly_logo.dart';
 import '../../widgets/home_indicator.dart';
 import '../../widgets/button_divider.dart';
 import '../../widgets/continue_button.dart';
-import '../../routes/app_routes.dart';
 
 // Halaman Login
 class LoginScreen extends StatefulWidget {
@@ -41,12 +44,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 48),
-
-                  // Logo (CENTER FIX)
-                  const Center(child: WanderlyLogo()),
-
                   const SizedBox(height: 16),
+                  const Center(child: WanderlyLogo()), // Logo (CENTER FIX)
+                  const SizedBox(height: 32),
 
                   // Text navigasi ke Register
                   Text(

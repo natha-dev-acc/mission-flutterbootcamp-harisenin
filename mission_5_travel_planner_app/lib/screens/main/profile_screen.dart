@@ -1,44 +1,70 @@
 import 'package:flutter/material.dart';
-import '../../styles/app_color.dart';
-import '../../widgets/wanderly_logo.dart';
-import '../../widgets/home_indicator.dart';
-import '../../main.dart';
 
-// Halaman Profile (Placeholder + Toggle Theme)
+import '../../styles/app_spacing.dart';
+
+import '../../widgets/wanderly_logo.dart';
+import '../../widgets/square_icon.dart';
+
+import '../../main.dart'; // ThemeController
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colors = AppColors.of(context);
-    final theme = ThemeController.of(context);
+    final themeController = ThemeController.of(context);
+    final isDark = themeController.isDark;
 
-    return Scaffold(
-      backgroundColor: colors.background,
-      body: Column(
-        children: [
-          const Spacer(),
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            // const WanderlyLogo(),
+            const Center(child: WanderlyLogo()),
+            const SizedBox(height: 32),
 
-          const WanderlyLogo(),
-          const SizedBox(height: 16),
-          const Text('Profile Screen'),
+            // GRID SETTINGS (ANTI OVERFLOW)
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              alignment: WrapAlignment.center,
+              runAlignment: WrapAlignment.center,
+              children: [
+                SquareIcon(
+                  icon: isDark ? Icons.dark_mode : Icons.light_mode,
+                  label: isDark ? 'Dark Mode' : 'Light Mode',
+                  onTap: () {
+                    themeController.toggleTheme(!isDark);
+                  },
+                ),
+                const SquareIcon(
+                  icon: Icons.card_travel,
+                  label: 'Trip',
+                ),
+                const SquareIcon(
+                  icon: Icons.notifications,
+                  label: 'Notification Settings',
+                ),
+                const SquareIcon(
+                  icon: Icons.person,
+                  label: 'Profile Settings',
+                ),
+                const SquareIcon(
+                  icon: Icons.info,
+                  label: 'About Us',
+                ),
+                const SquareIcon(
+                  icon: Icons.share,
+                  label: 'Share the App',
+                ),
+              ],
+            ),
 
-          const SizedBox(height: 24),
-
-          // Toggle Dark / Light Mode
-          SwitchListTile(
-            title: const Text('Dark Mode'),
-            value: theme.isDark,
-            onChanged: (value) {
-              // Atur dark mode pada aplikasi
-              theme.toggleTheme(value);
-            },
-          ),
-
-          const Spacer(),
-
-          const HomeIndicator(),
-        ],
+            const SizedBox(height: 32),
+          ],
+        ),
       ),
     );
   }

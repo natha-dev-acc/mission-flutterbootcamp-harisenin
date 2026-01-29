@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../helpers/register_validator.dart';
+
 import '../../routes/app_routes.dart';
+
 import '../../styles/app_color.dart';
 import '../../styles/app_fontstyle.dart';
+
 import '../../widgets/wanderly_logo.dart';
 import '../../widgets/button_divider.dart';
 import '../../widgets/login_outline_button.dart';
@@ -40,12 +43,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ===== LOGO (CENTER + FIXED GAP) =====
-            const SizedBox(height: 24),
+            // LOGO (CENTER + FIXED GAP)
+            const SizedBox(height: 16),
             const Center(child: WanderlyLogo()),
-            const SizedBox(height: 24), // JARAK PASTI DARI KOTAK HITAM
+            const SizedBox(height: 32), // JARAK PASTI DARI KOTAK HITAM
 
-            // ===== KOTAK HITAM =====
+            // KOTAK HITAM
             Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,

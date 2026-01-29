@@ -5,11 +5,8 @@ import '../screens/splash_screen.dart';
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/register_screen.dart';
 
-// Main Screens
-import '../screens/main/home_screen.dart';
-// import '../screens/main/search_screen.dart';
-// import '../screens/main/trip_screen.dart';
-import '../screens/main/profile_screen.dart';
+// Main Shell (OTAK NAVIGASI)
+import '../screens/main/main_shell_screen.dart';
 
 // Kumpulan Named Routes aplikasi
 class AppRoutes {
@@ -18,23 +15,17 @@ class AppRoutes {
   static const login    = '/login';
   static const register = '/register';
   static const home     = '/home';
-  static const search   = '/search';
-  static const trip     = '/trip';
-  static const profile  = '/profile';
 
   // Mapping route ke halaman
   static Map<String, WidgetBuilder> routes = {
-    // Splash Screen (muncul sekali di awal)
+    // Splash Screen
     splash: (context) => const SplashScreen(),
 
     // Auth Screens
     login: (context) => const LoginScreen(),
     register: (context) => const RegisterScreen(),
 
-    // Main Screens
-    home: (context) => const HomeScreen(),
-    // search: (context) => const SearchScreen(),
-    // trip: (context) => const TripScreen(),
-    profile: (context) => const ProfileScreen(),
+    // MAIN ENTRY SETELAH LOGIN
+    home: (context) => const MainShellScreen(),
   };
 }
