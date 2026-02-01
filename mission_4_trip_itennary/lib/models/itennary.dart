@@ -3,6 +3,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'itennary.g.dart';
 
 // Model ItineraryItem menyimpan aktivitas perjalanan
+// 🗺️ Struktur class ItineraryItem sudah mantap dan lengkap! 
+// ⚠️ Sedikit typo di penamaan file dan class: "Itennary" seharunya "Itinerary". 
+// Gak masalah, ini sering kejadian kok, tinggal rename pelan-pelan ya! 😄
 @JsonSerializable()
 class ItineraryItem {
   final String lokasi;
@@ -18,6 +21,7 @@ class ItineraryItem {
   });
 
   // ===== MANUAL =====
+  // ✨ Fungsi Serialization manual berjalan mulus.
   Map<String, dynamic> toJsonManual() => {
         'lokasi': lokasi,
         'waktu': waktu,
@@ -35,6 +39,7 @@ class ItineraryItem {
       );
 
   // ===== AUTO =====
+  // 🧙‍♂️ Pakai JSON Generator bikin kode makin clean & safe. Good job!
   Map<String, dynamic> toJson() =>
       _$ItineraryItemToJson(this);
 
