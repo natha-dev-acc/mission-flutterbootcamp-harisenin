@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/trip_model.dart';
-import '../../services/trip_service.dart';
-
+import '../../providers/trip_provider.dart';
 import '../../helpers/label_from_icon.dart';
 
 import '../../widgets/wanderly_logo.dart';
@@ -11,24 +10,25 @@ import '../../widgets/trip_item.dart';
 import '../../widgets/square_icon.dart';
 import '../../widgets/save_button.dart';
 
-import '../crud/input_form_screen.dart';
 import '../crud/choose_trip_screen.dart';
 import '../crud/detail_trip_screen.dart';
+import '../crud/input_form_screen.dart';
 
-class TripScreen extends StatefulWidget {
+// Halaman utama daftar rencana perjalanan
+// UI hanya membaca data dari Provider (tanpa setState untuk CRUD)
+class TripScreen extends ConsumerStatefulWidget {
   const TripScreen({super.key});
 
   @override
-  State<TripScreen> createState() => _TripScreenState();
+  ConsumerState<TripScreen> createState() => _TripScreenState();
 }
 
-class _TripScreenState extends State<TripScreen> {
+class _TripScreenState extends ConsumerState<TripScreen> {
   final TextEditingController _controller = TextEditingController();
   String _keyword = '';
 
-  List<Trip> get _trips => TripService.savedTrips;
-
-  void _confirmDelete(String title, int index) {
+  // Dialog konfirmasi hapus
+  void _confirmDelete(String title, int realIndex) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -41,8 +41,14 @@ class _TripScreenState extends State<TripScreen> {
           ),
           TextButton(
             onPressed: () {
-              setState(() => TripService.deleteTrip(index));
+              ref.read(tripProvider.notifier).deleteTrip(realIndex);
               Navigator.pop(context);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Rencana perjalanan dihapus'),
+                ),
+              );
             },
             child: const Text('Ya'),
           ),
@@ -53,7 +59,14 @@ class _TripScreenState extends State<TripScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredTrips = _trips.where((trip) {
+    final tripState = ref.watch(tripProvider);
+
+    if (tripState.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Filter trip (UI concern)
+    final filteredTrips = tripState.trips.where((trip) {
       final q = _keyword.toLowerCase();
       return trip.title.toLowerCase().contains(q) ||
           trip.subtitle.toLowerCase().contains(q);
@@ -64,22 +77,24 @@ class _TripScreenState extends State<TripScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            // ===== HEADER =====
             const SizedBox(height: 16),
             const Center(child: WanderlyLogo()),
             const SizedBox(height: 32),
 
+            // Search
             WanderlySearchBar(
               controller: _controller,
               placeholder: 'Search your saved destination',
               onChanged: (value) {
-                setState(() => _keyword = value);
+                setState(() {
+                  _keyword = value;
+                });
               },
             ),
 
             const SizedBox(height: 24),
 
-            // ===== LIST =====
+            // LIST TRIP
             Expanded(
               child: filteredTrips.isEmpty
                   ? ListView(
@@ -100,12 +115,17 @@ class _TripScreenState extends State<TripScreen> {
                       itemBuilder: (context, index) {
                         final trip = filteredTrips[index];
 
+                        // INDEX ASLI DARI PROVIDER
+                        final realIndex =
+                            tripState.trips.indexOf(trip);
+
                         return TripItem(
                           title: trip.title,
                           subtitle: trip.subtitle,
                           imagePath: trip.image,
                           showActions: true,
 
+                          // Detail
                           onTap: () {
                             Navigator.push(
                               context,
@@ -119,6 +139,7 @@ class _TripScreenState extends State<TripScreen> {
                             );
                           },
 
+                          // Edit
                           onEdit: () async {
                             final result =
                                 await Navigator.push<Set<IconData>>(
@@ -132,15 +153,20 @@ class _TripScreenState extends State<TripScreen> {
                             );
 
                             if (result != null) {
-                              setState(() {
-                                TripService.updateActivities(index, result);
-                              });
+                              final updatedTrip =
+                                  trip.copyWithActivities(result);
+
+                              ref
+                                  .read(tripProvider.notifier)
+                                  .updateTrip(realIndex, updatedTrip);
                             }
                           },
 
+                          // Delete
                           onDelete: () =>
-                              _confirmDelete(trip.title, index),
+                              _confirmDelete(trip.title, realIndex),
 
+                          // Activities
                           bottomWidget: Padding(
                             padding: const EdgeInsets.only(top: 12),
                             child: Wrap(
@@ -162,20 +188,16 @@ class _TripScreenState extends State<TripScreen> {
 
             const SizedBox(height: 12),
 
-            // ===== BUTTON =====
+            // BUTTON TAMBAH
             SaveButton(
               label: 'Tambah Rencana Baru',
               onPressed: () async {
-                final result = await Navigator.push<bool>(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const ChooseTripScreen(),
                   ),
                 );
-
-                if (result == true) {
-                  setState(() {});
-                }
               },
             ),
 

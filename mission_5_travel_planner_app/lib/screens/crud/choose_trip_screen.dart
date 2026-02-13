@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/trip_model.dart';
+import '../../providers/trip_provider.dart';
 import '../../services/trip_service.dart';
 
 import '../../styles/app_spacing.dart';
@@ -12,11 +14,14 @@ import '../../widgets/save_button.dart';
 
 import 'input_form_screen.dart';
 
-class ChooseTripScreen extends StatelessWidget {
+// Halaman untuk memilih destinasi trip awal
+// Data trip statis diambil dari TripService.allTrips
+// Penyimpanan data dilakukan melalui Riverpod Provider
+class ChooseTripScreen extends ConsumerWidget {
   const ChooseTripScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = AppColors.of(context);
 
     return Scaffold(
@@ -38,13 +43,15 @@ class ChooseTripScreen extends StatelessWidget {
                 separatorBuilder: (_, __) =>
                     const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  final Trip trip = TripService.allTrips[index];
+                  final Trip baseTrip =
+                      TripService.allTrips[index];
 
                   return TripItem(
-                    title: trip.title,
-                    subtitle: trip.subtitle,
-                    imagePath: trip.image,
+                    title: baseTrip.title,
+                    subtitle: baseTrip.subtitle,
+                    imagePath: baseTrip.image,
                     onTap: () async {
+                      // Pilih aktivitas
                       final activities =
                           await Navigator.push<Set<IconData>>(
                         context,
@@ -58,13 +65,28 @@ class ChooseTripScreen extends StatelessWidget {
 
                       if (activities != null &&
                           activities.isNotEmpty) {
-                        TripService.createTrip(
-                          baseTrip: trip,
-                          activities: activities,
+                        // Buat Trip baru dengan aktivitas terpilih
+                        final newTrip =
+                            baseTrip.copyWithActivities(
+                          activities,
                         );
 
-                        // kembali ke TripScreen & trigger refresh
-                        Navigator.pop(context, true);
+                        // Simpan data melalui Provider (auto-save Hive)
+                        ref
+                            .read(tripProvider.notifier)
+                            .addTrip(newTrip);
+
+                        // Kembali ke TripScreen
+                        Navigator.pop(context);
+
+                        // Notifikasi sukses
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Rencana perjalanan ditambahkan'),
+                          ),
+                        );
                       }
                     },
                   );
