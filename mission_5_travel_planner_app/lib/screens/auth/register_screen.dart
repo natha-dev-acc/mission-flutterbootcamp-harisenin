@@ -11,6 +11,8 @@ import '../../widgets/wanderly_logo.dart';
 import '../../widgets/button_divider.dart';
 import '../../widgets/login_outline_button.dart';
 
+// 💎 `RegisterScreen` dengan desain kontainer hitam yang elegan di atas background biru! 
+// Penggunaan `SingleChildScrollView` memastikan form tetap aman di layar kecil. Pro! 🎨🌑
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 

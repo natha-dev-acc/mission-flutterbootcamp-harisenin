@@ -17,8 +17,8 @@ class TripItem extends StatelessWidget {
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
-  final Widget? bottomWidget;
-
+// 💎 Component `TripItem` ini sangat fleksibel (Reusable). Bisa dipakai di 
+// Search, Home, maupun Trip List dengan berbagai parameter mode. Mantap! 🧩✨
   const TripItem({
     super.key,
     required this.title,

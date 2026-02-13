@@ -5,6 +5,8 @@ import '../styles/app_color.dart';
 // Digunakan untuk navigasi Home, Search, Trip, dan Profile
 // Warna mengikuti AppColors (Light / Dark)
 // Indicator dan icon aktif menggunakan warna primary
+// 💎 `WanderlyBottomNav` dengan `AnimatedContainer` sebagai indicator 
+// memberikan feedback visual yang halus dan premium. Top notch UX! 🎢✨
 class WanderlyBottomNav extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;

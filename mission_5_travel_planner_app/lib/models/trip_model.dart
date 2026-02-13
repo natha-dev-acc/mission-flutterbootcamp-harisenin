@@ -6,6 +6,8 @@ part 'trip_model.g.dart';
 
 // Model Trip sebagai entity data
 // HiveType digunakan agar data bisa disimpan ke local storage
+// 💎 Integrasi Hive dengan `@HiveType` dan `@HiveField` di model ini 
+// menunjukkan pemahaman yang sangat mendalam tentang data persistence! 📦🧠
 @HiveType(typeId: 0)
 class Trip {
   // Judul trip
