@@ -6,9 +6,10 @@ import 'pages/itennary_page.dart';
 import 'models/trip.dart';
 
 void main() {
-  // UJI COBA SESUAI INSTRUKSI TUGAS
+  // 🌟 UJI COBA SESUAI INSTRUKSI TUGAS - Bagus sekali sudah memisahkan bagian testing!
 
   // Membuat 1 object Trip di memori
+  // 👍 Penggunaan data sampel yang realistis, keren!
   final trip = Trip(
     namaTrip: 'LIBURAN JEPANG 2026',
     tanggalMulai: '12 Januari 2026',
@@ -19,6 +20,7 @@ void main() {
   final jsonTrip = trip.toJson();
 
   // Cetak JSON ke konsol (debug console)
+  // 🔍 Output JSON sudah sesuai dengan format Map<String, dynamic>
   print('=== OBJECT → JSON ===');
   print(jsonTrip);
 
@@ -26,12 +28,13 @@ void main() {
   final tripFromJson = Trip.fromJson(jsonTrip);
 
   // Cetak hasil object hasil deserialisasi
+  // ✨ Deserialisasi berhasil! Data terambil kembali dengan sempurna.
   print('=== JSON → OBJECT ===');
   print('Nama Trip: ${tripFromJson.namaTrip}');
   print('Tanggal Mulai: ${tripFromJson.tanggalMulai}');
   print('Tanggal Akhir: ${tripFromJson.tanggalAkhir}');
 
-  // MENJALANKAN APLIKASI FLUTTER
+  // 🚀 MENJALANKAN APLIKASI FLUTTER
   runApp(const MyApp());
 }
 

@@ -4,6 +4,9 @@ part 'trip.g.dart';
 
 // Model Trip adalah jembatan antara
 // Object di memori ↔ JSON (teks)
+// 🏗️ Model Trip sudah sangat baik! 
+// 💡 Saran: Menggunakan data type DateTime untuk tanggal akan lebih memudahkan operasi waktu nanti,
+// tapi untuk saat ini String sudah sesuai instruksi. Keren!
 @JsonSerializable()
 class Trip {
   final String namaTrip;
@@ -18,6 +21,7 @@ class Trip {
 
   // ===== MANUAL =====
   // Simpan object ke JSON secara manual
+  // 🎯 Mantap! Implementasi manual ini dasar penting sebelum pakai generator.
   Map<String, dynamic> toJsonManual() => {
         'namaTrip': namaTrip,
         'tanggalMulai': tanggalMulai,
@@ -32,7 +36,8 @@ class Trip {
       );
 
   // ===== AUTO (json_serializable) =====
-  // Simpan object ke JSON secara otomatis
+  // 🚀 Luar biasa! Kamu sudah selangkah lebih maju dengan menggunakan json_serializable. 
+  // Ini sangat membantu di project besar agar terhindar dari typos.
   Map<String, dynamic> toJson() => _$TripToJson(this);
 
   // Ambil JSON lalu ubah ke object otomatis
