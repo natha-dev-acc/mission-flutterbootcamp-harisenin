@@ -1,3 +1,5 @@
+// 💎 Validasi untuk registrasi di sini sangat lengkap, termasuk konfirmasi password. 
+// User experience jadi lebih aman dengan pengecekan mendalam seperti ini! 🔐🏆
 class RegisterValidator {
   // Validasi Full Name
   static String? validateFullName(String? value) {

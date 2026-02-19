@@ -4,6 +4,8 @@ import '../models/trip_model.dart';
 
 // Service khusus database (Hive)
 // UI TIDAK BOLEH langsung akses Hive
+// 💎 Abstraksi `TripService` untuk mengelola data Hive secara statis 
+// memudahkan akses data dari seluruh bagian aplikasi. Sangat efisien! 📦⚡
 class TripService {
   // ================= SEARCH SOURCE (STATIC / TIDAK DISIMPAN) =================
   // Digunakan untuk halaman pilih trip

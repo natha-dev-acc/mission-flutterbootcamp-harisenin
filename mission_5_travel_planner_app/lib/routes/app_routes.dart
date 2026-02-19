@@ -9,6 +9,8 @@ import '../screens/auth/register_screen.dart';
 import '../screens/main/main_shell_screen.dart';
 
 // Kumpulan Named Routes aplikasi
+// 💎 Penggunaan Named Routes di `AppRoutes` mempermudah navigasi terpusat 
+// dan membuat maintenance kode jadi jauh lebih gampang. Rapi! 🛣️🏗️
 class AppRoutes {
   // Route name constants
   static const splash   = '/splash';

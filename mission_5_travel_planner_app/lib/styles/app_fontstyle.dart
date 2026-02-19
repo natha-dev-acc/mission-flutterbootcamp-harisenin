@@ -6,7 +6,8 @@ import 'app_color.dart';
 // Enum engine font
 enum FontEngine { urbanist, inter }
 
-// Helper dasar font
+// 💎 Integrasi `Sizer` langsung ke dalam `AppFonts` menjamin seluruh teks 
+// di aplikasi kamu akan responsif secara otomatis. Sangat efisien! 📱📏
 class AppFonts {
   static TextStyle base({
     required FontEngine engine,

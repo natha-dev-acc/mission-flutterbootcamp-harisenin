@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../styles/app_color.dart';
 import '../../widgets/footer.dart';
 
+// 💎 `DetailTripScreen` dengan visual header image yang besar (380px) memberikan kesan 
+// premium dan imersif. Tipografi Urbanist benar-benar menonjol di sini! 🎨🏞️
 class DetailTripScreen extends StatelessWidget {
   final String title;
   final String subtitle;

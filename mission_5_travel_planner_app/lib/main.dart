@@ -8,6 +8,9 @@ import 'models/trip_model.dart';
 import 'routes/app_routes.dart';
 
 // Entry point aplikasi
+// 🚩 Point of Interest: Kamu menggunakan `Hive` untuk persistensi data dan `ProviderScope` (Riverpod).
+// Meskipun ini menunjukkan skill teknis yang tinggi, mohon diingat bahwa requirement
+// Mission 5 spesifik meminta penggunaan `setState`. Tetap semangat bereksperimen! 🚀🏚️
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,7 +28,8 @@ void main() async {
   runApp(const ProviderScope(child: WanderlyApp()));
 }
 
-// Root widget aplikasi
+// 💎 Penggunaan `InheritedWidget` untuk `ThemeController` secara global
+// adalah teknik lanjutan yang sangat efisien untuk manajemen tema! 🌓✨
 class WanderlyApp extends StatefulWidget {
   const WanderlyApp({super.key});
 

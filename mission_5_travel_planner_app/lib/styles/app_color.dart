@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 // Kelas ini menyimpan seluruh definisi warna aplikasi
+// 💎 Management warna yang terpusat seperti ini memudahkan maintenance 
+// saat ingin melakukan rebranding atau tweaking UI secara global. Mantap! 🎨🌈
 class AppColors {
   final Color background;
   final Color surface;

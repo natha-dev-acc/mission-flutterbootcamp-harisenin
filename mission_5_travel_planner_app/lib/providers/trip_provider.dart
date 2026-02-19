@@ -28,6 +28,8 @@ class TripState {
 
 // StateNotifier untuk mengelola seluruh logika bisnis Trip
 // UI TIDAK BOLEH melakukan manipulasi data langsung
+// 💎 Penggunaan `StateNotifier` untuk mengelola `TripState` adalah kombinasi 
+// yang sangat powerful untuk aplikasi yang reaktif dan testable. Brilliant! 🔋🏗️
 class TripNotifier extends StateNotifier<TripState> {
   TripNotifier() : super(TripState(trips: [], isLoading: true)) {
     // Load data dari Hive saat provider pertama kali dibuat

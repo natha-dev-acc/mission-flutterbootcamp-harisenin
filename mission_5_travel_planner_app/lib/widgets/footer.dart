@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../styles/app_fontstyle.dart';
 
+// 💎 `Footer` yang sangat komprehensif! Detail alamat, social icons, 
+// dan link perusahaan membuat aplikasi terasa sangat profesional. 🏢🌐
 class Footer extends StatelessWidget {
   const Footer({super.key});
 
