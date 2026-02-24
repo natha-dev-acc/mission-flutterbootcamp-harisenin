@@ -52,11 +52,13 @@ class TripService {
 
   // Update trip berdasarkan index
   static void updateTrip(int index, Trip updatedTrip) {
+    //{Inline Review: Tambahkan guard index + try-catch agar putAt tidak melempar runtime error saat index invalid.}
     _box.putAt(index, updatedTrip);
   }
 
   // Hapus trip
   static void deleteTrip(int index) {
+    //{Inline Review: deleteAt perlu validasi batas index supaya aplikasi tidak crash saat data berubah dinamis.}
     _box.deleteAt(index);
   }
 }

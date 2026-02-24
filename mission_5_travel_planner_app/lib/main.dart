@@ -43,6 +43,7 @@ class _WanderlyAppState extends State<WanderlyApp> {
 
   // Toggle Light / Dark Mode
   void toggleTheme(bool isDark) {
+    //{Inline Review: Theme app-level sebaiknya dikelola via Riverpod provider agar pattern state tidak campuran.}
     setState(() {
       _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
     });

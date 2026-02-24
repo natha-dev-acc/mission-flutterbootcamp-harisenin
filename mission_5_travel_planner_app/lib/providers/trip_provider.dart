@@ -1,3 +1,4 @@
+//{Inline Review: Hindari import legacy API Riverpod agar maintainable saat upgrade versi.}
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../models/trip_model.dart';
