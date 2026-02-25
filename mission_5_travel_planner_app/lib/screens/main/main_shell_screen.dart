@@ -8,6 +8,8 @@ import 'search_screen.dart';
 import 'trip_screen.dart';
 import 'profile_screen.dart';
 
+// 💎 `MainShellScreen` yang mengelola navigasi antar tab dengan sangat bersih. 
+// Penggunaan `IndexedStack` (atau list indexing) adalah cara standar yang solid! 🗂️⚡
 class MainShellScreen extends StatefulWidget {
   const MainShellScreen({super.key});
 

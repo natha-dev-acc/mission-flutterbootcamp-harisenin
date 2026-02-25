@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// 💎 Penggunaan `FittedBox` di dalam button adalah penyelamat dari 
+// text overflow. Ini adalah detail kecil yang berdampak besar pada kualitas! 🛡️🎨
 class SaveButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;

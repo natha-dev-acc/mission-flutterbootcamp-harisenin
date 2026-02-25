@@ -1,5 +1,7 @@
 import 'package:sizer/sizer.dart';
 
+// 💎 Definisi spacing berbasis `Sizer` (w unit) sangat brilian! 
+// Layout akan tetap proporsional di berbagai aspek rasio layar. 📱📏
 class AppSpacing {
   const AppSpacing._();
 
