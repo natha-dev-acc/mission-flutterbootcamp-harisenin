@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 // Button outline putih khusus halaman Register
+// 💎 `LoginOutlineButton` yang dikustomisasi khusus untuk estetika Register. 
+// Kontras putih di atas hitamnya sangat berkelas! 🏳️⬛✨
 class LoginOutlineButton extends StatelessWidget {
   final String text;
   final String iconPath;

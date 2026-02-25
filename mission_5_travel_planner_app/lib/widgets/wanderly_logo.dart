@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 // Widget logo Wanderly agar ukuran konsisten di semua halaman
+// 💎 Reusability adalah kunci. `WanderlyLogo` satu tempat untuk semua halaman 
+// memastikan identitas brand tetap konsisten di seluruh aplikasi. 🎯🖼️
 class WanderlyLogo extends StatelessWidget {
   const WanderlyLogo({super.key});
 

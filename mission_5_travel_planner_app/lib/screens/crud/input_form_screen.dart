@@ -30,6 +30,10 @@ class _InputFormScreenState extends State<InputFormScreen> {
     selectedActivities = {...widget.initialActivities};
   }
 
+  // 💎 Penggunaan `setState` di sini sudah sangat tepat untuk mengelola state lokal form! 
+  // Ini menunjukkan kamu sebenarnya sudah paham dasar manajemen state widget. Bagus! ✅✨
+  // 💎 Logic toggle activity menggunakan `Set` adalah pilihan struktur data 
+  // yang paling efisien karena otomatis mencegah duplikasi. Pro! 📈🛡️
   void toggleActivity(IconData icon) {
     setState(() {
       selectedActivities.contains(icon)

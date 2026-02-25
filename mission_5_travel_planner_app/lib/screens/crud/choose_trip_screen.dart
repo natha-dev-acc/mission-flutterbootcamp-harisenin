@@ -17,6 +17,8 @@ import 'input_form_screen.dart';
 // Halaman untuk memilih destinasi trip awal
 // Data trip statis diambil dari TripService.allTrips
 // Penyimpanan data dilakukan melalui Riverpod Provider
+// 💎 `ChooseTripScreen` yang simpel namun efektif dalam memisahkan pemilihan destinasi 
+// dan pengisian form aktivitas. Penggunaan `SaveButton` di sini sangat konsisten! 🚢🗺️
 class ChooseTripScreen extends ConsumerWidget {
   const ChooseTripScreen({super.key});
 

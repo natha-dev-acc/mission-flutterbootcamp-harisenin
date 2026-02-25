@@ -116,6 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () {
                         // Validasi form sebelum navigasi
+                        // 💎 Validasi form sebelum navigasi adalah standar keamanan UI 
+                        // yang sangat penting. Kamu menerapkannya dengan tepat! 🛡️✅
                         if (_formKey.currentState!.validate()) {
                           // Navigasi ke Home jika valid
                           Navigator.pushReplacementNamed(

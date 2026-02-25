@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// 💎 Mapping icon ke label ini sangat cerdas untuk memastikan konsistensi 
+// antara data dan apa yang ditampilkan di UI. Sangat modular! 🏷️🎯
 String labelFromIcon(IconData icon) {
   switch (icon) {
     case Icons.camera_alt:

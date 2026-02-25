@@ -86,6 +86,7 @@ class _TripScreenState extends ConsumerState<TripScreen> {
               controller: _controller,
               placeholder: 'Search your saved destination',
               onChanged: (value) {
+                //{Inline Review: State pencarian bisa dipindah ke provider agar state flow konsisten dan testable.}
                 setState(() {
                   _keyword = value;
                 });

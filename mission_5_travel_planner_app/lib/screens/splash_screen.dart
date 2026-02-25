@@ -7,6 +7,8 @@ import '../widgets/wanderly_logo.dart';
 import '../widgets/home_indicator.dart';
 
 // Halaman Splash Screen
+// 💎 Splash Screen dengan `Stack` dan `Positioned` menunjukkan kamu paham 
+// konsep layering UI yang kompleks. Hasilnya sangat presisi! 🎨✨
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
