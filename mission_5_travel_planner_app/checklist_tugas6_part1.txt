@@ -1,0 +1,43 @@
+🔐 DATA & STATE
+
+ Hive init di main.dart ✔
+
+ Hive adapter model ✔
+
+ Auto-save tiap CRUD ✔
+
+ Loading state Hive ❌
+
+ Aman DB kosong ❌
+
+🔁 RIVERPOD
+
+ Provider untuk Trip ✔
+
+ Semua CRUD lewat Provider ❌
+
+ Tidak ada setState di CRUD screen ❌
+
+🖥️ UI
+
+ Trip list reaktif (watch provider) ❌
+
+ Loading indicator ❌
+
+ Snackbar/Dialog saat delete ❌
+
+ Responsive (ListView, Expanded) ❌
+
+🧠 ARSITEKTUR
+
+ providers/ ✔
+
+ services/ ✔
+
+ UI bebas logika bisnis ❌
+
+📝 KOMENTAR KODE
+
+ Komentar sesuai ketentuan tugas di file migrasi ❌
+
+➡️ Saat ini checklist ≈ 10/16
