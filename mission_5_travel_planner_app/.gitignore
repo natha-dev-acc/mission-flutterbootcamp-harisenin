@@ -43,3 +43,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase & Google Services (SENSITIVE)
+android/app/google-services.json
+android/app/src/debug/google-services.json
+android/app/src/release/google-services.json
+
+# Local config (sudah default, tapi tetap pastikan)
+android/local.properties
+
+# Optional (kalau nanti pakai)
+.env
