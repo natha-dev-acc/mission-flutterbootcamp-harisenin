@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../styles/app_color.dart';
+import '../../core/styles/app_color.dart';
 
 // Tombol umum untuk Continue, Google, dan Apple
 class ContinueButton extends StatelessWidget {

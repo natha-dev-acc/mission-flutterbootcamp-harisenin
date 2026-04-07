@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../styles/app_color.dart';
-import '../../../styles/app_fontstyle.dart';
+import '../../../core/styles/app_color.dart';
+import '../../../core/styles/app_fontstyle.dart';
 
 class TripTitle extends StatelessWidget {
   const TripTitle({super.key});

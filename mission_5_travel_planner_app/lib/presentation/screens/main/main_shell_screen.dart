@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/bottom_navbar.dart';
 
-import '../../../styles/app_color.dart';
+import '../../../core/styles/app_color.dart';
 
 import 'home_screen.dart';
 import 'trip_screen.dart';

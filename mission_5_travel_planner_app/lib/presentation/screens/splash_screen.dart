@@ -6,8 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../routes/app_routes.dart';
 
-import '../../styles/app_color.dart';
-import '../../styles/app_fontstyle.dart';
+import '../../core/styles/app_color.dart';
+import '../../core/styles/app_fontstyle.dart';
 
 import '../widgets/wanderly_logo.dart';
 import '../widgets/home_indicator.dart';

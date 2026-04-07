@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../styles/app_spacing.dart';
-import '../../../styles/app_color.dart'; // Import warna aplikasi
+import '../../../core/styles/app_spacing.dart';
+import '../../../core/styles/app_color.dart'; // Import warna aplikasi
 import '../../widgets/wanderly_logo.dart';
 import '../../widgets/trip_screen/title.dart';
 import '../../widgets/trip_screen/filter.dart';

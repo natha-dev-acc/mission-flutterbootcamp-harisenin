@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:label_marker/label_marker.dart'; // Untuk marker angka
 
-// Pastikan import ini sesuai dengan struktur folder Anda
+// Import sudah disesuaikan dengan struktur provider Anda
 import '../../providers/trip_provider.dart';
 
 class MapWithCarousel extends ConsumerStatefulWidget {
@@ -17,6 +18,52 @@ class _MapWithCarouselState extends ConsumerState<MapWithCarousel> {
   final PageController _pageController = PageController(viewportFraction: 0.85);
 
   int _currentIndex = 0;
+  Set<Marker> _markers = {}; // State untuk menampung label markers
+
+  @override
+  void initState() {
+    super.initState();
+    // Memastikan marker dibuat setelah frame pertama dirender
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateMarkers();
+    });
+  }
+
+  // Fungsi untuk membuat marker angka menggunakan package label_marker
+  void _updateMarkers() async {
+    final trips = ref.read(tripProvider).trips;
+    if (trips.isEmpty) return;
+
+    Set<Marker> tempMarkers = {};
+
+    for (int i = 0; i < trips.length; i++) {
+      final trip = trips[i];
+      tempMarkers.addLabelMarker(
+        LabelMarker(
+          label: "${i + 1}",
+          markerId: MarkerId(trip.id),
+          position: LatLng(trip.lat, trip.long),
+          backgroundColor: Colors.green,
+          textStyle: const TextStyle(
+            fontSize: 45,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
+    // Cukup panggil await tanpa variabel 'updatedMarkers' untuk menghilangkan warning
+    await Future.wait(
+      tempMarkers.map((m) => Future.value(m)),
+    );
+
+    if (mounted) {
+      setState(() {
+        _markers = tempMarkers;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -27,38 +74,47 @@ class _MapWithCarouselState extends ConsumerState<MapWithCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    final trips = ref.watch(tripProvider).trips;
+    // Watch tripProvider untuk mendapatkan data terbaru
+    final tripState = ref.watch(tripProvider);
+    final trips = tripState.trips;
 
     if (trips.isEmpty) {
-      return const Center(child: Text("Belum ada trip"));
+      return const SizedBox(
+        height: 300,
+        child: Center(child: Text("Belum ada data trip")),
+      );
     }
 
-    final initialTrip = trips[_currentIndex];
+    // Koordinat untuk garis Polyline hijau
+    final List<LatLng> polylinePoints =
+        trips.map((t) => LatLng(t.lat, t.long)).toList();
 
-    // Gunakan LayoutBuilder atau ConstrainedBox jika widget ini 
-    // diletakkan di dalam Column lain yang tidak terbatas tingginya.
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // ================= MAP =================
           SizedBox(
-            height: 300, // Memberikan batas tinggi yang jelas
+            height: 300,
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(initialTrip.lat, initialTrip.long),
-                zoom: 10,
+                target: LatLng(trips[0].lat, trips[0].long),
+                zoom: 7,
               ),
               onMapCreated: (controller) {
                 _mapController = controller;
+                _updateMarkers(); // Update marker saat map siap
               },
-              markers: trips.map((trip) {
-                return Marker(
-                  markerId: MarkerId(trip.id),
-                  position: LatLng(trip.lat, trip.long),
-                  infoWindow: InfoWindow(title: trip.title),
-                );
-              }).toSet(),
+              markers: _markers,
+              polylines: {
+                Polyline(
+                  polylineId: const PolylineId("route_line"),
+                  points: polylinePoints,
+                  color: Colors.green,
+                  width: 4,
+                  geodesic: true,
+                ),
+              },
             ),
           ),
 
@@ -72,76 +128,75 @@ class _MapWithCarouselState extends ConsumerState<MapWithCarousel> {
               itemCount: trips.length,
               onPageChanged: (index) {
                 setState(() {
-                  _currentIndex = index;
+                  _currentIndex = index; // Sekarang variabel ini terpakai
                 });
 
                 final trip = trips[index];
                 _mapController?.animateCamera(
-                  CameraUpdate.newLatLng(
+                  CameraUpdate.newLatLngZoom(
                     LatLng(trip.lat, trip.long),
+                    10, // Zoom otomatis saat geser kartu
                   ),
                 );
               },
               itemBuilder: (context, index) {
                 final trip = trips[index];
-
-                // GANTI 'YOUR_API_KEY' dengan key asli dari Google Cloud Console
-                final imageUrl =
-                    "https://maps.googleapis.com/maps/api/staticmap"
-                    "?center=${trip.lat},${trip.long}"
-                    "&zoom=13&size=300x300&maptype=roadmap"
-                    "&key=AIzaSyDQ3ZyUuxaEOhe_s5J0vv7utyN4a5gM310";
+                // Highlight jika kartu sedang aktif
+                final bool isActive = _currentIndex == index;
 
                 return Padding(
                   padding: const EdgeInsets.only(right: 12),
                   child: Card(
-                    elevation: 3,
+                    elevation: isActive ? 6 : 2,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
+                      side: isActive 
+                        ? const BorderSide(color: Colors.green, width: 2)
+                        : BorderSide.none,
                     ),
                     child: Row(
                       children: [
-                        // ===== IMAGE DENGAN ERROR HANDLING (403) =====
-                        ClipRRect(
-                          borderRadius: const BorderRadius.horizontal(
-                            left: Radius.circular(12),
+                        // ===== PENGGANTI STATIC MAP (ANGKA URUTAN) =====
+                        Container(
+                          width: 110,
+                          decoration: BoxDecoration(
+                            color: isActive ? Colors.green : Colors.grey[400],
+                            borderRadius: const BorderRadius.horizontal(
+                              left: Radius.circular(12),
+                            ),
                           ),
-                          child: Image.network(
-                            imageUrl,
-                            width: 110,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                            // Menangani Error 403 atau gambar gagal muat
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 110,
-                                color: Colors.grey[300],
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.map_outlined, color: Colors.grey),
-                                    Text("No Map", style: TextStyle(fontSize: 10, color: Colors.grey)),
-                                  ],
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.location_on, 
+                                  color: isActive ? Colors.white : Colors.white70, 
+                                  size: 20
                                 ),
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Container(
-                                width: 110,
-                                color: Colors.grey[100],
-                                child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                              );
-                            },
+                                Text(
+                                  "${index + 1}",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "TRIP ${index + 1}",
+                                  style: const TextStyle(color: Colors.white70, fontSize: 9),
+                                )
+                              ],
+                            ),
                           ),
                         ),
 
                         const SizedBox(width: 12),
 
-                        // ===== INFO (Gunakan Expanded untuk cegah overflow teks) =====
+                        // ===== INFO TRIP =====
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                            padding: const EdgeInsets.all(12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -157,17 +212,21 @@ class _MapWithCarouselState extends ConsumerState<MapWithCarousel> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  trip.status,
-                                  style: TextStyle(color: Colors.blueAccent.shade700, fontSize: 12),
+                                  trip.status.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.green[700],
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
                                   children: [
-                                    const Icon(Icons.calendar_today, size: 12, color: Colors.grey),
+                                    const Icon(Icons.calendar_month, size: 14, color: Colors.grey),
                                     const SizedBox(width: 4),
                                     Text(
                                       "${trip.startDate.day}/${trip.startDate.month}/${trip.startDate.year}",
-                                      style: const TextStyle(fontSize: 11, color: Colors.grey),
+                                      style: const TextStyle(fontSize: 12, color: Colors.black54),
                                     ),
                                   ],
                                 ),

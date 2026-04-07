@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../styles/app_spacing.dart';
+import '../../../core/styles/app_spacing.dart';
+
+import '/data/models/trip_model.dart';
 
 import '../../providers/trip_provider.dart';
 import '../../providers/filter_provider.dart';
@@ -138,7 +140,9 @@ class TripList extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => EditTripScreen(trip: trip),
+                              // builder: (_) => EditTripScreen(trip: trip),
+                              // Bungkus trip (Entity) menjadi Model agar EditTripScreen tidak error
+                              builder: (_) => EditTripScreen(trip: TripModel.fromEntity(trip)),
                             ),
                           );
                         },

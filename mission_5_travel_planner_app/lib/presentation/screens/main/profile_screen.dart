@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../styles/app_spacing.dart';
+import '../../../core/styles/app_spacing.dart';
 
 import '../../widgets/wanderly_logo.dart';
 import '../../widgets/square_icon.dart';

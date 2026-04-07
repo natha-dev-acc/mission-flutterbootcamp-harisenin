@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/utils/validators.dart';
 // import '../../../routes/app_routes.dart';
 
-import '../../../styles/app_color.dart';
-import '../../../styles/app_fontstyle.dart';
+import '../../../core/styles/app_color.dart';
+import '../../../core/styles/app_fontstyle.dart';
 
 import '../../providers/auth_provider.dart';
 

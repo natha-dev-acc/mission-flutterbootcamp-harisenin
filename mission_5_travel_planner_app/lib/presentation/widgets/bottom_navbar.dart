@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../styles/app_color.dart';
+import '../../core/styles/app_color.dart';
 
 // Widget Bottom Navigation Bar utama aplikasi
 // Digunakan untuk navigasi Home, Search, Trip, dan Profile

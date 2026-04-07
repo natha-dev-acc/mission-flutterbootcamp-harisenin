@@ -3,14 +3,20 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/datasource/trip_remote_datasource.dart';
-import '../../data/models/trip_model.dart';
+import '../../data/repositories/trip_repository_impl.dart';
+
+import '../../domain/entities/trip_entity.dart';
+import '../../domain/usecases/add_trip.dart';
+import '../../domain/usecases/delete_trip.dart';
+import '../../domain/usecases/get_trips.dart';
+import '../../domain/usecases/update_trip.dart';
 
 import 'filter_provider.dart';
 import 'sort_provider.dart';
 
 // ================= STATE =================
 class TripState {
-  final List<TripModel> trips;
+  final List<TripEntity> trips;
   final bool isLoading;
   final String? error;
 
@@ -21,7 +27,7 @@ class TripState {
   });
 
   TripState copyWith({
-    List<TripModel>? trips,
+    List<TripEntity>? trips,
     bool? isLoading,
     String? error,
   }) {
@@ -35,27 +41,34 @@ class TripState {
 
 // ================= NOTIFIER =================
 class TripNotifier extends Notifier<TripState> {
-  final TripRemoteDatasource _datasource = TripRemoteDatasource();
-  StreamSubscription<List<TripModel>>? _subscription;
+  late final AddTrip _addTrip;
+  late final GetTrips _getTrips;
+  late final UpdateTrip _updateTrip;
+  late final DeleteTrip _deleteTrip;
+
+  StreamSubscription<List<TripEntity>>? _subscription;
 
   @override
   TripState build() {
-    // FIX: Gunakan Future.microtask agar dijalankan tepat SETELAH build selesai.
+    final datasource = TripRemoteDatasource();
+    final repository = TripRepositoryImpl(datasource);
+
+    _addTrip = AddTrip(repository);
+    _getTrips = GetTrips(repository);
+    _updateTrip = UpdateTrip(repository);
+    _deleteTrip = DeleteTrip(repository);
+
     Future.microtask(() => _listenTrips());
 
     ref.onDispose(() {
       _subscription?.cancel();
     });
 
-    // Inisialisasi awal dengan status loading
     return TripState(isLoading: true);
   }
 
-  // ================= LISTEN REALTIME =================
   void _listenTrips() {
-    // Tidak perlu memanggil state.copyWith(isLoading: true) di sini 
-    // karena sudah diatur saat return awal di fungsi build()
-    _subscription = _datasource.getTrips().listen(
+    _subscription = _getTrips().listen(
       (trips) {
         state = state.copyWith(
           trips: trips,
@@ -72,53 +85,30 @@ class TripNotifier extends Notifier<TripState> {
     );
   }
 
-  // ================= ADD =================
-  Future<void> addTrip(TripModel trip) async {
-    try {
-      state = state.copyWith(isLoading: true);
-      await _datasource.addTrip(trip);
-      state = state.copyWith(isLoading: false);
-    } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: e.toString(),
-      );
-    }
+  Future<void> addTrip(TripEntity trip) async {
+    await _addTrip(trip);
   }
 
-  // ================= UPDATE =================
-  Future<void> updateTrip(TripModel trip) async {
-    try {
-      await _datasource.updateTrip(trip);
-    } catch (e) {
-      state = state.copyWith(error: e.toString());
-    }
+  Future<void> updateTrip(TripEntity trip) async {
+    await _updateTrip(trip);
   }
 
-  // ================= DELETE =================
   Future<void> deleteTrip(String id) async {
-    try {
-      await _datasource.deleteTrip(id);
-    } catch (e) {
-      state = state.copyWith(error: e.toString());
-    }
+    await _deleteTrip(id);
   }
 }
 
-// ================= BASE PROVIDER =================
+// ================= PROVIDER =================
 final tripProvider =
     NotifierProvider<TripNotifier, TripState>(TripNotifier.new);
 
-// =======================================================
-// DERIVED PROVIDER (FILTER + SORT)
-// =======================================================
-final filteredSortedTripsProvider = Provider<List<TripModel>>((ref) {
+// ================= FILTER + SORT =================
+final filteredSortedTripsProvider = Provider<List<TripEntity>>((ref) {
   final trips = ref.watch(tripProvider).trips;
   final filter = ref.watch(filterProvider);
   final sort = ref.watch(sortProvider);
 
-  // ================= FILTER =================
-  List<TripModel> result = trips.where((trip) {
+  List<TripEntity> result = trips.where((trip) {
     switch (filter) {
       case TripFilter.upcoming:
         return trip.status == 'upcoming';
@@ -131,7 +121,6 @@ final filteredSortedTripsProvider = Provider<List<TripModel>>((ref) {
     }
   }).toList();
 
-  // ================= SORT =================
   result.sort((a, b) {
     if (sort == TripSort.newest) {
       return b.startDate.compareTo(a.startDate);

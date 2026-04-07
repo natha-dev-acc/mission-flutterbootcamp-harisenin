@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../styles/app_spacing.dart';
+import '../../../core/styles/app_spacing.dart';
 import '../../providers/trip_provider.dart';
 import '../../../data/models/trip_model.dart';
 import '../../widgets/trip_screen/form.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../styles/app_color.dart';
+import '../../core/styles/app_color.dart';
 
 // Widget indikator bawah seperti di iOS
 class HomeIndicator extends StatelessWidget {
